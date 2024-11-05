@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# check for pacakge installer script and execute it
+if [[ -x ./package_installer ]];
+then
+  echo "running package installer script"
+  ./package_installer
+else
+  echo "package_installer not found or executable"
+  exit 1
+fi
+
+#
+#if [[ -x ./config_symlink ]];
+#then echo "Running symlink creation script
