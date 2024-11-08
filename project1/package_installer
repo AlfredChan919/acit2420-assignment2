@@ -1,18 +1,38 @@
 #!/usr/bin/env bash
 
+# File: package_installer
+#
+# Description: When this script is ran, it checks the file path ./packages.txt and installs the packages listed within the contents or else it prints an error.
+#
+# Author: Alfred Chan
+# Date: Nov 8, 2024
+# Source: man pacman
+#
+
 packages=./packages.txt
+
+# checks if packages.txt does not exist
 if [[ ! -f $packages ]];
 then
+  # prints an error, then exits script with exit code 1
   echo "Packages list $packages not found"
   exit 1
 fi
 
+# iterates through the contents of ./packages.txt and stores each item in variable package
 for package in $(cat $packages);
   do
+    # discards any messages or errors outputted by pacman command
     if pacman -Qs "$package" > /dev/null;
     then
+
       echo "$package is already installed"
     else
+      # prints installing message and then begins installing packages in packages.txt
+      # -S synchronizes the packages
+      # -y refreshes and downloads a fresh copy of the master databases
+      # -u upgrades or adds package to system
+      # --noconfirm bypasses confirmation messages
       echo "installing $package"
       pacman -Syu --noconfirm "$package"
     fi
