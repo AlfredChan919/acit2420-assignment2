@@ -74,12 +74,13 @@ create_symlink(){
   directory_path=$1
   symlink_path=$2
   
-  # checks if the file exists and is a symbolic link
+  # -L checks if the file exists and is a symbolic link
   if [[ -L $symlink_path ]];
   then
     echo Symbolic link already exists for $symlink_path
   else
     # if the file does not exist, then we create a symbolic link for the given paths
+    # ln command is used to link files, -s helps create symbolic links
     ln -s $directory_path $symlink_path
     echo Symbolic link created for $symlink_path
   fi
