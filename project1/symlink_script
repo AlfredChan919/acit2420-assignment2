@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+
+# File: config_symlink
+#
+# Description: When this script is ran, it checks the file path ./packages.txt and installs the packages listed within the contents or else it prints an error.
+#
+# Author: Alfred Chan
+# Date: Nov 8, 2024
+# 
+# Sources: 
+# 1) https://man7.org/linux/man-pages/man1/ln.1.html | man page information on ln command
+# 2) https://www.ibm.com/docs/en/aix/7.1?topic=l-ln-command | examples of ln command
+# 3) man id | Finding the current user's ID
+# 4) man sudo | SUDO_USER definition
+# 5) https://git-scm.com/docs/git-clone | how to utilize git clone in bash scripting
+# 6) https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html | conditional expressions for symbolic links
+ 
+# check to see if the SUDO_USER variable is not empty, it means sudo was called
+if [[ -n $SUDO_USER ]];
+then
+  # sets the home user path
+  home_user="/home/$SUDO_USER";  
+elif [[ "$(id -u)" -eq 0 ]]; # checks to see if the user's ID calling the function is equal to 0 a.k.a. the root user
+then
+  # sets the home user path as root directory
+  home_user="/root"
+else
+  home_user
+fi
+
+# create the directories needed in the home user's directory
+# -p helps create parent directories as well if they dont exist and minimizes errors
+mkdir -p $home_user/bin
+mkdir -p $home_user/.config/kak
+mkdir -p $home_user/.config/tmux
+
+# cloning the repo
+repo_link="https://gitlab.com/cit2420/2420-as2-starting-files.git"
+repo_destination="$home_user/cloned_repo"
+
+# checking to see if the directory for our repo destination has already been created
+if [[ -d $repo_desination ]];
+then
+  # checks if the directory is empty even though it exists. If it is empty, we can still clone into it.
+  if [[ ! -z $(ls -A $repo_destination) ]];
+  then
+    echo Error cloning repo, please choose a new directory.
+    # exit from the script because new user may be missing the cloned repo if we continue.
+  else
+    echo Directory already exists, attempting cloning
+    git clone $repo_link $repo_destination
+  fi
+else
+  echo Cloning repo...
+  git clone $repo_link $repo_destination
+fi
+
+# checking the exit code of git clone, 0 indicates successful cloning, 1 indicates error
+if [[ $? -eq 0 ]];
+then
+  echo Cloning successful.
+else
+  echo Cloning failed.
+fi
+
+
+# beginning symbolic links
+
+# helper function
+# checks if symlink has already been created, then creates a symlink for the given arguments
+
+create_symlink(){
+  # stores the two input arguments for the functions
+  directory_path=$1
+  symlink_path=$2
+  
+  # checks if the file exists and is a symbolic link
+  if [[ -L $symlink_path ]];
+  then
+    echo Symbolic link already exists for $symlink_path
+  else
+    # if the file does not exist, then we create a symbolic link for the given paths
+    ln -s $directory_path $symlink_path
+    echo Symbolic link created for $symlink_path
+  fi
+
+}
+
+# using the helper function, we call it with our desired paths to create our symlinks
+
+# explicitly stating paths instead of using repo_destination variable to make it clear for user
+
+# symlinks for bin
+create_symlink $home_user/cloned_repo/bin/sayhi $home_user/bin/sayhi
+create_symlink $home_user/cloned_repo/bin/install-fonts $home_user/bin/install-fonts
+
+# symlinks for config
+create_symlink $home_user/cloned_repo/config/kakrc $home_user/.config/kakrc
+create_symlink $home_user/cloned_repo/config/tmux/tmux.conf $home_user/config/tmux/tmux.conf
+
+# symlink for bashrc
+create_symlink $home_user/cloned_repo/home/bashrc $home_user/.bashrc
