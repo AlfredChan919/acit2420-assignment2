@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# File: main_script
+#
+# Description: This script is used to interact with the other files and scripts for the configuration. It is used to call the other two scripts as required.
+#
+# Author: Alfred Chan
+# Date: Nov 8, 2024
+# Source: https://www.oreilly.com/videos/bash-shell-scripting/9780137689064/9780137689064-BSS2_04_10_01/ | 10.1 Working with Options
+#
+
+# user function that displays information on how to use the script. It is shown when user types an invalid input or when requested
+function usage(){
+  echo "Usage: ./main_script [-i info] [-p package installer] [-s creates symbolic links] [-x executes both scripts]"
+  exit 1
+}
+
+# help message shown to describe what the script actually does
+function helpmessage(){
+  echo "main_script is a script that helps you install packages and configures files by creating symbolic links between a file's remote location in the user's home directory and its actual location."
+  echo "-i displays this help message as well as how to use it (usage message)."
+  echo "-p will run the package_installer script which installs the packages located within packages.txt"
+  echo "-s will run the symlink_script which creates symbolic links for the config files."
+  echo "-x will execute and run both the package_installer script and the symlink_script script."
+}
+
+
+while getopts "ipsx" opt; do
+  case $opt in
+    i) helpmessage
+      usage;;
+    p) ./package_installer;;
+    s) ./symlink_script;;
+    x) ./package_installer && ./symlink_script;;
+  esac
+shift $((OPTIND -1))
+done
+
+if [[ -z "$1" ]];
+then
+  usage
+fi
+
+if [[ -n "$2" ]];
+then
+  usage
+fi
+
