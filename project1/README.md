@@ -65,6 +65,13 @@ This script will create symbolic links for:
 ### bashrc
 `/home/USER/cloned_repo/home/bashrc` to `/home/USER/.bashrc`
 
+# Project 2 - User Creation Script
+
+## DISCLAIMER
+The script is unfinished.
+
+## Introduction
+The script `new_user_script` was supposed to take in command-line options to set a new user's information. It then runs the script and creates a new user. The script will try to find the next available user ID and group ID for the new user and group. After the home directory is created, the script would copy the `etc/skel` folder into the home directory. Lastly, it will prompt to change the user's password using `passwd $username`
 
 
 

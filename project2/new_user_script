@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+# File: new_user_script
+# 
+# Description: 
+#
+# Name: Alfred
+# Date: Nov 9, 2024
+# Source: 
+# man sudo | how to utilize effective user-ID and user-ID in from COMMAND EXECUTION section
+# https://www.gnu.org/software/bash/manual/bash.html | Definition on EUID and UID
+# https://www.oreilly.com/videos/bash-shell-scripting/9780137689064/9780137689064-BSS2_04_10_01/ | 10.1 Working with Options
+# https://tldp.org/LDP/sag/html/adduser.html | information on user creation in linux
+
+# checks if we are running are a sudouser(script called with sudo) or root
+# EUID is the effective user ID which if it is 0, it means we are currently the root user or have root privileges
+if [[ "$EUID" -ne 0 ]];
+then
+  echo "Please rerun this script as root user, or with sudo priveledges."
+  exit 1
+fi
+
+
+# us
+function usage(){
+  echo "Usage: ./new_user_script [-i] [-u] [-g] [-U] [-G] [-h] [-s]"
+  echo ""
+  echo "-i displays the usage function as a guide"
+  echo "-u lets you specify the Username of the new user"
+  echo "-g lets you specify the Group of the new user"
+  echo "-U specifies the UID"
+  echo "-G GID"
+  echo "-h home directory"
+  echo "-s specifies shell"
+
+  exit 1
+}
+
+
+# used to get the options from the user's command-line at the time of calling the script and output what the user wants the script to perform
+# refer to usage and helpmessage functions to know what each 
+while getopts ":u:g:U:G:h:s:i" opt; do
+  case $opt in
+    i) usage
+      ;;
+    u) username="$OPTARG"
+      ;;
+    g) group_name="$OPTARG"
+      ;;
+    U) user_id="$OPTARG"
+      ;;
+    G) group_id="$OPTARG"
+      ;;
+    h) home_dir="$OPTARG"
+      ;;
+    s) shell_name="$OPTARG"
+      ;;
+    # prints error, called when an option is called, but is missing an argument
+    :) echo "Error, the option -$OPTARG requires an argument"
+  esac
+# we reset the index of the arguments in the options in case we need to call it again
+shift $((OPTIND -1))
+done
+
+# checks if the script was called with an argument, if not, output error message and echo usage function
+if [[ -z "$1" ]];
+then
+  echo "No arguments have been provided"
+  usage
+fi
+
+# checks if there is more than one argument called, if so, then output error message and echo usage function
+if [[ -n "$2" ]];
+then
+  echo "Too many arguments provided"
+  usage
+fi
+
+passwd "$username"
