@@ -73,5 +73,11 @@ The script is unfinished.
 ## Introduction
 The script `new_user_script` was supposed to take in command-line options to set a new user's information. It then runs the script and creates a new user. The script will try to find the next available user ID and group ID for the new user and group. After the home directory is created, the script would copy the `etc/skel` folder into the home directory. Lastly, it will prompt to change the user's password using `passwd $username`
 
+# Sources
 
+1. Git. *git-clone Documentation.* https://git-scm.com/docs/git-clone
+2. GNU. *Bash Manual: Bash Conditional Expressions.* https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html
+3. IBM. *ln Command.* https://www.ibm.com/docs/en/aix/7.1?topic=l-ln-command
+4. Man7. *ln(1) Linux Manual Page.* https://www.man7.org/linux/man-pages/man1/ln.1.html
+5. O'Reilly. *Bash Shell Scripting.* 10.1 Working with Options. https://www.oreilly.com/videos/bash-shell-scripting/9780137689064/9780137689064-BSS2_04_10_01/
 
