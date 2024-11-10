@@ -33,16 +33,21 @@ while getopts "ipsx" opt; do
     s) ./symlink_script;;
     x) ./package_installer && ./symlink_script;;
   esac
+# we reset the index of the arguments in the options in case we need to call it again
 shift $((OPTIND -1))
 done
 
+# checks if the script was called with an argument, if not, output error message and echo usage function
 if [[ -z "$1" ]];
 then
+  echo "No arguments have been provided"
   usage
 fi
 
+# checks if there is more than one argument called, if so, then output error message and echo usage function
 if [[ -n "$2" ]];
 then
+  echo "Too many arguments provided"
   usage
 fi
 
