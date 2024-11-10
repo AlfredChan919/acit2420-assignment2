@@ -9,7 +9,7 @@
 # Source: https://www.oreilly.com/videos/bash-shell-scripting/9780137689064/9780137689064-BSS2_04_10_01/ | 10.1 Working with Options
 #
 
-# user function that displays information on how to use the script. It is shown when user types an invalid input or when requested
+# usage function that displays information on how to use the script. It is shown when user types an invalid input or when requested
 function usage(){
   echo "Usage: ./main_script [-i info] [-p package installer] [-s creates symbolic links] [-x executes both scripts]"
   exit 1
@@ -43,14 +43,7 @@ shift $((OPTIND -1))
 done
 
 # checks if the script was called with an argument, if not, output error message and echo usage function
-if [[ -z "$1" ]];
-then
-  echo "No arguments have been provided"
-  usage
-fi
-
-# checks if there is more than one argument called, if so, then output error message and echo usage function
-if [[ -n "$2" ]];
+if [[ ! -z "$1" ]];
 then
   echo "Too many arguments provided"
   usage

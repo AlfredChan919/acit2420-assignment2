@@ -25,7 +25,7 @@ then
   # sets the home user path as root directory
   home_user="/root"
 else
-  home_user
+  home_user="$HOME"
 fi
 
 # create the directories needed in the home user's directory
@@ -97,7 +97,7 @@ create_symlink $home_user/cloned_repo/bin/install-fonts $home_user/bin/install-f
 
 # symlinks for config
 create_symlink $home_user/cloned_repo/config/kakrc $home_user/.config/kakrc
-create_symlink $home_user/cloned_repo/config/tmux/tmux.conf $home_user/config/tmux/tmux.conf
+create_symlink $home_user/cloned_repo/config/tmux/tmux.conf $home_user/.config/tmux/tmux.conf
 
 # symlink for bashrc
 create_symlink $home_user/cloned_repo/home/bashrc $home_user/.bashrc
