@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# File: config_symlink
+# File: symlink_script
 #
 # Description: When this script is ran, it checks the file path ./packages.txt and installs the packages listed within the contents or else it prints an error.
 #
