@@ -24,13 +24,18 @@ function helpmessage(){
   echo "-x will execute and run both the package_installer script and the symlink_script script."
 }
 
-
+# used to get the options from the user's command-line at the time of calling the script and output what the user wants the script to perform
+# refer to usage and helpmessage functions to know what each 
 while getopts "ipsx" opt; do
   case $opt in
+    # displays the help message and how to use the script
     i) helpmessage
       usage;;
+    # runs the package_installer script
     p) ./package_installer;;
+    # runs the symlink_script script
     s) ./symlink_script;;
+    # runs both the package_installer and symlink_script scripts
     x) ./package_installer && ./symlink_script;;
   esac
 # we reset the index of the arguments in the options in case we need to call it again
